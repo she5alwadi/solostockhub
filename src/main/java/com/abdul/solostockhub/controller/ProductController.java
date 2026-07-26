@@ -105,30 +105,49 @@ public class ProductController {
         return "products/form";
     }
 
-    @PostMapping("/products")
-    public String createProduct(
-            @Valid @ModelAttribute("product") Product product,
-            BindingResult bindingResult,
-            Model model) {
+@PostMapping("/products")
+public String createProduct(
+        @Valid @ModelAttribute("product") Product product,
+        BindingResult bindingResult,
+        @RequestParam(required = false) Long brandId,
+        Model model) {
 
-        if (bindingResult.hasErrors()) {
-            model.addAttribute(
-                    "brands",
-                    brandService.getAllBrands()
+    if (brandId == null) {
+        bindingResult.rejectValue(
+                "brand",
+                "brand.required",
+                "Brand is required"
+        );
+    } else {
+        try {
+            product.setBrand(brandService.getBrandById(brandId));
+        } catch (IllegalArgumentException exception) {
+            bindingResult.rejectValue(
+                    "brand",
+                    "brand.invalid",
+                    "Select a valid brand"
             );
-
-            model.addAttribute(
-                    "categories",
-                    ProductCategory.values()
-            );
-
-            return "products/form";
         }
-
-        Product savedProduct = productService.saveProduct(product);
-
-        return "redirect:/products/" + savedProduct.getProductId();
     }
+
+    if (bindingResult.hasErrors()) {
+        model.addAttribute(
+                "brands",
+                brandService.getAllBrands()
+        );
+
+        model.addAttribute(
+                "categories",
+                ProductCategory.values()
+        );
+
+        return "products/form";
+    }
+
+    Product savedProduct = productService.saveProduct(product);
+
+    return "redirect:/products/" + savedProduct.getProductId();
+}
 
     @GetMapping("/products/{id}")
     public String viewProduct(
