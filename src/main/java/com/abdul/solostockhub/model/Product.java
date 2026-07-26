@@ -69,7 +69,7 @@ public class Product {
     @Column(nullable = false, length = 30)
     private ProductCategory category;
 
-    @NotNull(message = "Brand is required")
+    
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
