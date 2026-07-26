@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>SoloStock Hub | Contact</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<header class="page-header">
+    <div class="container">
+
+        <h1 class="fw-bold">Contact</h1>
+
+        <p class="text-muted mb-0">
+            Contact the SoloStock Hub project team.
+        </p>
+
+    </div>
+</header>
+
+<main class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-5">
+
+                    <h2 class="mb-4">Project information</h2>
+
+                    <div class="mb-4">
+
+                        <h5>Developer</h5>
+
+                        <p class="text-muted">
+                            Abdul Daas
+                        </p>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <h5>Application</h5>
+
+                        <p class="text-muted">
+                            SoloStock Hub
+                        </p>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <h5>Project category</h5>
+
+                        <p class="text-muted">
+                            E-Commerce Platform
+                        </p>
+
+                    </div>
+
+                    <div>
+
+                        <h5>Support</h5>
+
+                        <p class="text-muted">
+                            For application questions or technical support,
+                            contact the SoloStock Hub administrator.
+                        </p>
+
+                    </div>
+
+                    <a th:href="@{/products}"
+                       class="btn btn-dark">
+                        Browse Products
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container text-center">
+        <p class="mb-0">
+            © 2026 SoloStock Hub · Developed by Abdul Daas
+        </p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+</html>

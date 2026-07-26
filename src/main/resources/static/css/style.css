@@ -1,0 +1,44 @@
+body {
+    background-color: #f5f7fa;
+    color: #212529;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #212529, #495057);
+    color: white;
+    padding: 80px 0;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.feature-card {
+    border: none;
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card {
+    border: none;
+    border-left: 5px solid #212529;
+    border-radius: 10px;
+}
+
+.page-header {
+    background-color: #ffffff;
+    padding: 35px 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+footer {
+    background-color: #212529;
+    color: white;
+    padding: 20px 0;
+    margin-top: 60px;
+}
