@@ -1,5 +1,6 @@
 package com.abdul.solostockhub.service;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,13 +27,15 @@ public class AppUserService {
     }
 
     public boolean usernameExists(String username) {
-        return appUserRepository
-                .existsByUsernameIgnoreCase(username);
+        return username != null
+                && appUserRepository
+                .existsByUsernameIgnoreCase(username.trim());
     }
 
     public boolean emailExists(String email) {
-        return appUserRepository
-                .existsByEmailIgnoreCase(email);
+        return email != null
+                && appUserRepository
+                .existsByEmailIgnoreCase(email.trim());
     }
 
     @Transactional
@@ -54,7 +57,10 @@ public class AppUserService {
         );
 
         user.setEmail(
-                registrationForm.getEmail().trim().toLowerCase()
+                registrationForm
+                        .getEmail()
+                        .trim()
+                        .toLowerCase()
         );
 
         user.setPassword(
@@ -69,8 +75,39 @@ public class AppUserService {
         return appUserRepository.save(user);
     }
 
+    @Transactional
+    public AppUser createSystemUser(
+            String firstName,
+            String lastName,
+            String username,
+            String email,
+            String rawPassword,
+            Role role) {
+
+        AppUser user = new AppUser();
+
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setUsername(username);
+        user.setEmail(email.toLowerCase());
+        user.setPassword(passwordEncoder.encode(rawPassword));
+        user.setRole(role);
+        user.setEnabled(true);
+
+        return appUserRepository.save(user);
+    }
+
     public List<AppUser> getAllUsers() {
-        return appUserRepository.findAll();
+        return appUserRepository
+                .findAll()
+                .stream()
+                .sorted(
+                        Comparator.comparing(
+                                AppUser::getUsername,
+                                String.CASE_INSENSITIVE_ORDER
+                        )
+                )
+                .toList();
     }
 
     public long getUserCount() {

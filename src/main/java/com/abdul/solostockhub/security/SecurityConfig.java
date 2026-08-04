@@ -29,9 +29,10 @@ public class SecurityConfig {
             PasswordEncoder passwordEncoder) {
 
         DaoAuthenticationProvider provider =
-                new DaoAuthenticationProvider();
+                new DaoAuthenticationProvider(
+                        customUserDetailsService
+                );
 
-        provider.setUserDetailsService(customUserDetailsService);
         provider.setPasswordEncoder(passwordEncoder);
 
         return provider;
@@ -48,6 +49,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize -> authorize
 
+                        // Public pages and static resources
                         .requestMatchers(
                                 "/",
                                 "/about",
@@ -60,19 +62,19 @@ public class SecurityConfig {
                                 "/error"
                         ).permitAll()
 
+                        // Admin-only pages and operations
                         .requestMatchers(
-                                "/admin/**"
+                                "/admin/**",
+                                "/products/*/delete"
                         ).hasRole("ADMIN")
 
+                        // Staff and administrators can create/edit
                         .requestMatchers(
                                 "/products/new",
                                 "/products/*/edit"
                         ).hasAnyRole("ADMIN", "STAFF")
 
-                        .requestMatchers(
-                                "/products/*/delete"
-                        ).hasRole("ADMIN")
-
+                        // Customers, staff and administrators can view
                         .requestMatchers(
                                 "/products",
                                 "/products/**"
@@ -85,13 +87,13 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/", true)
-                        .failureUrl("/login?error")
+                        .failureUrl("/login?error=true")
                         .permitAll()
                 )
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessUrl("/login?logout=true")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
