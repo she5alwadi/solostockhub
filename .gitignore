@@ -1,10 +1,21 @@
 HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 
-### STS ###
+# Maven build output
+target/
+
+# Maven
+.mvn/timing.properties
+
+# VS Code
+.vscode/
+
+# IntelliJ
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Eclipse
 .apt_generated
 .classpath
 .factorypath
@@ -13,21 +24,20 @@ target/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Logs
+*.log
+logs/
 
-### VS Code ###
-.vscode/
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# H2 database files
+data/
+*.mv.db
+*.trace.db

@@ -9,7 +9,8 @@ import com.abdul.solostockhub.model.Product;
 import com.abdul.solostockhub.model.ProductCategory;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository
+        extends JpaRepository<Product, Long> {
 
     Page<Product> findByCategory(
             ProductCategory category,
@@ -31,6 +32,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             String name,
             Pageable pageable
     );
+
+    boolean existsByNameIgnoreCase(String name);
 
     long countByQuantityLessThanEqual(Integer quantity);
 }

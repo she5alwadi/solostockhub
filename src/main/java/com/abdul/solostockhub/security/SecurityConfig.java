@@ -16,7 +16,8 @@ public class SecurityConfig {
     public SecurityConfig(
             CustomUserDetailsService customUserDetailsService) {
 
-        this.customUserDetailsService = customUserDetailsService;
+        this.customUserDetailsService =
+                customUserDetailsService;
     }
 
     @Bean
@@ -45,11 +46,12 @@ public class SecurityConfig {
             throws Exception {
 
         http
-                .authenticationProvider(authenticationProvider)
+                .authenticationProvider(
+                        authenticationProvider
+                )
 
                 .authorizeHttpRequests(authorize -> authorize
 
-                        // Public pages and static resources
                         .requestMatchers(
                                 "/",
                                 "/about",
@@ -59,49 +61,83 @@ public class SecurityConfig {
                                 "/css/**",
                                 "/js/**",
                                 "/images/**",
-                                "/error"
+                                "/error",
+                                "/h2-console/**"
                         ).permitAll()
 
-                        // Admin-only pages and operations
                         .requestMatchers(
                                 "/admin/**",
                                 "/products/*/delete"
                         ).hasRole("ADMIN")
 
-                        // Staff and administrators can create/edit
                         .requestMatchers(
                                 "/products/new",
                                 "/products/*/edit"
-                        ).hasAnyRole("ADMIN", "STAFF")
+                        ).hasAnyRole(
+                                "ADMIN",
+                                "STAFF"
+                        )
 
-                        // Customers, staff and administrators can view
                         .requestMatchers(
                                 "/products",
                                 "/products/**"
                         ).authenticated()
 
-                        .anyRequest().authenticated()
+                        .anyRequest()
+                        .authenticated()
                 )
 
                 .formLogin(form -> form
+
                         .loginPage("/login")
+
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/", true)
-                        .failureUrl("/login?error=true")
+
+                        .defaultSuccessUrl(
+                                "/",
+                                true
+                        )
+
+                        .failureUrl(
+                                "/login?error=true"
+                        )
+
                         .permitAll()
                 )
 
                 .logout(logout -> logout
+
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout=true")
+
+                        .logoutSuccessUrl(
+                                "/login?logout=true"
+                        )
+
                         .invalidateHttpSession(true)
+
                         .clearAuthentication(true)
+
                         .deleteCookies("JSESSIONID")
+
                         .permitAll()
                 )
 
-                .exceptionHandling(exception -> exception
-                        .accessDeniedPage("/access-denied")
+                .exceptionHandling(exception ->
+                        exception.accessDeniedPage(
+                                "/access-denied"
+                        )
+                )
+
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers(
+                                "/h2-console/**"
+                        )
+                )
+
+                .headers(headers -> headers
+                        .frameOptions(frame ->
+                                frame.sameOrigin()
+                        )
                 );
 
         return http.build();
